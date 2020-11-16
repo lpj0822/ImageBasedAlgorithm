@@ -25,9 +25,9 @@ static void processImage(const char* imagePath)
         printf("image: %s\n", flieName);
         if(readImage(flieName, image) >= 0)
         {
-            double ts = (double)cvGetTickCount();
+            double ts = (double)cv::getTickCount();
             OpticalAnalyze(image, 720, 480);
-            printf("OpticalAnalyze_take_time:%0.3f\n",(cvGetTickCount() - ts)/(cvGetTickFrequency() * 1000.0f));
+            printf("OpticalAnalyze_take_time:%0.3f\n", (cv::getTickCount() - ts) / cv::getTickFrequency());
 
             Trajectory *pLKTrajecy = NULL;
             int nTrayjecyNum = 0;
@@ -71,14 +71,14 @@ static int processVideo(const char* videoPath)
         cv::Mat gray;
         std::stringstream imagePath;
 
-        cv::cvtColor(frame, gray, CV_RGB2GRAY);
+        cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
 
         //imagePath << "optical_img" << nId << ".dat";
         //matWrite(gray, imagePath.str());
 
-        double ts = (double)cvGetTickCount();
+        double ts = (double)cv::getTickCount();
         OpticalAnalyze(gray.data, gray.cols, gray.rows);
-        printf("OpticalAnalyze_take_time:%0.3f\n",(cvGetTickCount() - ts)/(cvGetTickFrequency() * 1000.0f));
+        printf("OpticalAnalyze_take_time:%0.3f\n", (cv::getTickCount() - ts) / cv::getTickFrequency());
 
         Trajectory *pLKTrajecy = NULL;
         int nTrayjecyNum = 0;
@@ -101,7 +101,7 @@ static int processVideo(const char* videoPath)
         for (i = 0 ;  i < nTrayjecyNum; i += 4)
         {
             Trajectory  *pTrajecy = pLKTrajecy + i;
-            CvScalar color = CV_RGB(rand()%255,rand()%255,rand()%255);
+            cv::Scalar color = CV_RGB(rand()%255,rand()%255,rand()%255);
 
             for ( j = 0 ; j < pTrajecy->PoitNum - 1; j++ )
             {
@@ -121,7 +121,7 @@ static int processVideo(const char* videoPath)
 
         char NumLab[10];
         sprintf(NumLab,"%d", nId);
-        cv::putText(CombaredImage, NumLab, cv::Point(130,30), CV_FONT_HERSHEY_COMPLEX, 1.0f, cv::Scalar(0,0,255), 1);
+        cv::putText(CombaredImage, NumLab, cv::Point(130,30), cv::FONT_HERSHEY_COMPLEX, 1.0f, cv::Scalar(0,0,255), 1);
         cv::imshow("CombaredImage1", CombaredImage);
         if(cv::waitKey(1) == 27)
             break;
@@ -130,12 +130,12 @@ static int processVideo(const char* videoPath)
     }
     system("pause");
     video.release();
-    cvDestroyAllWindows();
+    cv::destroyAllWindows();
     return 0;
 }
 
 void testOpticalFlow()
 {
-    const char* videoPath = "C:/Users/lpj/Desktop/QtProject/data/Wuxi_Perdestrain_Test_Video/YSA201512090078.avi";
+    const char* videoPath = "F:/QtProject/data/Wuxi_Perdestrain_Test_Video/YSA201512090078.avi";
     processVideo(videoPath);
 }

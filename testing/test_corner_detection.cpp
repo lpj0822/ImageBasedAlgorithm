@@ -53,7 +53,7 @@ static int processVideo(const char* videoPath)
         nId++;
     }
     video.release();
-    cvDestroyAllWindows();
+    cv::destroyAllWindows();
     return 0;
 }
 
